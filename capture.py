@@ -242,7 +242,7 @@ if __name__ == "__main__":
         print(f"Fichier sélectionné : {video_path}")
 
         # video_path = "Vidéos inputs/Introduction - Wanderstop OST (Piano Tutorial) [7m2WpDmy0-M].mp4" # Remplace par ton fichier
-        output_folder = "Photos Output" # Dossier de sortie
+        output_folder = "PhotosOutput" # Dossier de sortie
         # Créer le dossier de sortie s'il n'existe pas
         os.makedirs(output_folder, exist_ok=True)
 
@@ -261,7 +261,7 @@ if __name__ == "__main__":
 
                 trimmed_frames = trim_frames(cap, i0, i1, total_frames, y_barre)
 
-                pages = frames_layout(trimmed_frames, 3, 5)
+                pages = frames_layout(trimmed_frames, 3, 2)
 
                 save_pages(pages, output_folder)
         
