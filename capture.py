@@ -1,7 +1,7 @@
 import cv2
 import os
 import copy
-from numpy import vstack, hstack, shape
+from numpy import vstack, hstack, shape, zeros
 from tkinter import Tk, filedialog
 
 
@@ -173,6 +173,10 @@ def frames_layout(frames, nb_frame_verticaly, nb_frame_horizontaly=0):
         frame_in_page = []
         for i in range(reste):
             frame_in_page.append(frames[ quotient*nb_frame_verticaly + i])
+        nb_frame_missing = nb_frame_verticaly-reste # number of missing frames to complete the layout 
+        frames_shape = shape(frames[1])
+        for i in range(nb_frame_missing):
+            frame_in_page.append(zeros(frames_shape))
         pages_verticales.append(vstack(frame_in_page[::-1]))
 
     # Horizontale
@@ -180,7 +184,7 @@ def frames_layout(frames, nb_frame_verticaly, nb_frame_horizontaly=0):
         pages = []
         nb_pages_verticales = len(pages_verticales)
         quotient, reste = divmod(nb_pages_verticales, nb_frame_horizontaly)
-        print(reste)
+
         for i in range(quotient):
             pages_vertical_in_page = []
             for j in range(nb_frame_horizontaly):
@@ -188,20 +192,10 @@ def frames_layout(frames, nb_frame_verticaly, nb_frame_horizontaly=0):
             pages.append(hstack(pages_vertical_in_page[::1]))
         if reste > 0 :
             pages_vertical_in_page = []
-            hauteur_max = 0
-            page_seul = []
             for i in range(reste):
-                hauteur = shape(pages_verticales[quotient*nb_frame_horizontaly + i])[0]
-                if i == 0 :
-                    hauteur_max = hauteur
-                if hauteur == hauteur_max:
-                    pages_vertical_in_page.append(pages_verticales[quotient*nb_frame_horizontaly + i])
-                else :
-                    page_seul.append(pages_verticales[quotient*nb_frame_horizontaly + i])
+                pages_vertical_in_page.append(pages_verticales[quotient*nb_frame_horizontaly + i])
 
             pages.append(hstack(pages_vertical_in_page[::1]))
-            for p in page_seul :# On ajoute la page qui n'est pas à la bonne hauteur dans une page à part
-                pages.append(p)
         
         print("Pages prêtes")
 
